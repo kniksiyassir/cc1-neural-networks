@@ -18,7 +18,8 @@ Comparaison de trois approches d'entraînement
 
 - [Objectif](#objectif)
 - [Contenu du dépôt](#contenu-du-dépôt)
-- [Résultats](#résultats)
+- [Partie 1 : Iris](#partie-1--iris-classification)
+- [Partie 2 : House Prices](#partie-2--house-prices-régression)
 - [Ouvrir dans Colab](#ouvrir-dans-colab)
 - [Lancer le projet](#lancer-le-projet)
 - [Outils utilisés](#outils-utilisés)
@@ -32,8 +33,6 @@ Entraîner un réseau de neurones de trois façons et comparer leurs performance
 2. **Keras** : API haut niveau avec `Sequential`
 3. **TensorFlow bas niveau** : boucle d'entraînement manuelle avec `GradientTape`
 
-Deux problèmes sont traités : la classification du dataset **Iris** et la régression sur le dataset **House Prices**.
-
 ## Contenu du dépôt
 
 | Fichier | Description |
@@ -45,9 +44,15 @@ Deux problèmes sont traités : la classification du dataset **Iris** et la rég
 | `iris.csv` | Données Iris |
 | `housing.csv` | Données House Prices |
 
-## Résultats
+---
 
-### Partie 1 : Iris (classification)
+## Partie 1 : Iris (classification)
+
+**Données** : 150 fleurs, 4 mesures (longueur et largeur des sépales et des pétales), 3 espèces : *Setosa*, *Versicolor*, *Virginica*.
+
+**Préparation** : encodage des classes (`LabelEncoder`), séparation 80 % / 20 % stratifiée, standardisation (`StandardScaler`).
+
+**Modèles** : deux couches cachées de 10 neurones (ReLU), sortie softmax à 3 classes.
 
 | Modèle | Accuracy |
 |---|---|
@@ -55,17 +60,27 @@ Deux problèmes sont traités : la classification du dataset **Iris** et la rég
 | Keras `Sequential` | **96,67 %** |
 | TensorFlow `GradientTape` | 93,33 % |
 
-### Partie 2 : House Prices (régression)
+---
 
-| Modèle | R² |
-|---|---|
-| scikit-learn `MLPRegressor` | 0,617 |
-| Keras `Sequential` | **0,619** |
-| TensorFlow `GradientTape` | 0,593 |
+## Partie 2 : House Prices (régression)
 
-### Conclusion
+**Données** : 545 logements, 13 colonnes (surface, chambres, salles de bain, étages, équipements, etc.). La variable à prédire est le **prix**.
 
-Les trois approches donnent des performances proches. Keras obtient les meilleurs scores, à égalité avec scikit-learn sur Iris. `GradientTape` est un peu en retrait, mais offre le plus de contrôle sur l'entraînement.
+**Préparation** : conversion des variables yes/no et de l'ameublement en valeurs numériques, séparation 80 % / 20 % (436 en entraînement, 109 en test), standardisation des variables et du prix.
+
+**Modèles** : deux couches cachées (32 puis 16 neurones, ReLU), une sortie.
+
+| Modèle | R² | RMSE | MAE |
+|---|---|---|---|
+| scikit-learn `MLPRegressor` | 0,6173 | 1 390 902 | 1 032 534 |
+| Keras `Sequential` | **0,6189** | **1 387 836** | **998 208** |
+| TensorFlow `GradientTape` | 0,5933 | 1 433 713 | 1 080 473 |
+
+---
+
+## Conclusion
+
+Les trois approches donnent des performances proches. **Keras** obtient les meilleurs scores sur House Prices et fait jeu égal avec scikit-learn sur Iris. `GradientTape` est un peu en retrait, mais offre le plus de contrôle sur l'entraînement.
 
 ## Ouvrir dans Colab
 
